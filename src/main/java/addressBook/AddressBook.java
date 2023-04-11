@@ -238,87 +238,6 @@ public class AddressBook {
         stateDictionary.get(state).add(contact);
     }
 
-//    List<ContactPerson> contactsInAnycity = addressBook.getContactsByCity("Anycity");
-//System.out.println("Contacts in Anycity:");
-//for (ContactPerson contact : contactsInAnycity) {
-//        System.out.println(contact);
-//    }
-//
-//    // Get contacts by state
-//    List<ContactPerson> contactsInCA = addressBook.getContactsByState("CA");
-//System.out.println("Contacts in California:");
-//for (ContactPerson contact : contactsInCA) {
-//        System.out.println(contact); }
-//public List<ContactPerson> getContactsByCity(String city) {
-//    if (cityDictionary.containsKey(city)) {
-//        return cityDictionary.get(city);
-//    } else {
-//        return new ArrayList<>();
-//    }
-//}
-//
-//    public List<ContactPerson> getContactsByState(String state) {
-//        if (stateDictionary.containsKey(state)) {
-//            return stateDictionary.get(state);
-//        } else {
-//            return new ArrayList<>();
-//        }
-//    }
-
-
-    // working code before Use Java Streams
-//    public List<Contact> getContactsByCity() {
-//        System.out.println("To get contact by city enter City Name :");
-//        Scanner sc=new Scanner(System.in);
-//        String city=sc.nextLine();
-//        // check in Dictionary
-//        if (cityDictionary.containsKey(city)) {
-//             cityDictionary.get(city);
-//        } else {
-//             new ArrayList<>();
-//        }
-//        for (Contact contact : contactsInAnycity) {
-//        System.out.println(contact);
-//    }
-//        return null;
-//    }
-
-//    public List<Contact> getContactsByState() {
-//        System.out.println("To get contact by city enter City Name :");
-//        Scanner sc=new Scanner(System.in);
-//        String state=sc.nextLine();
-//        if (stateDictionary.containsKey(state)) {
-//            stateDictionary.get(state);
-//        } else {
-//            new ArrayList<>();
-//        }
-//        for (Contact contact : contactsInCA) {
-//        System.out.println(contact); }
-//        return null;
-//    }
-
-//    public void getContactCountByCity() {
-//        System.out.println("To get count enter City Name :");
-//        Scanner sc=new Scanner(System.in);
-//        String city=sc.nextLine();
-//        if (cityDictionary.containsKey(city)) {
-//            System.out.println(cityDictionary.get(city).size());
-//        } else {
-//            System.out.println("Not Found");
-//        }
-//    }
-
-//    public void getContactCountByState() {
-//        System.out.println("To get count enter State Name :");
-//        Scanner sc=new Scanner(System.in);
-//        String state=sc.nextLine();
-//        if (stateDictionary.containsKey(state)) {
-//            System.out.println(stateDictionary.get(state).size());
-//        } else {
-//            System.out.println("Not Found");
-//        }
-//    }
-
     //--------------------New by Streams ------------------------------
     public void getContactsByCity() {
         System.out.println("\nTo get contact by city enter City Name :\n");
@@ -420,26 +339,19 @@ public class AddressBook {
     }
 
     public void display() {
-//        if (Contact.isEmpty()) {
-//            System.out.println("No contacts in address book");
-//        } else {
-//            for (ContactPerson contact : contacts) {
+        if (cotacts_array.isEmpty()) {
+            System.out.println("No contacts in address book");
+        } else {
+            cotacts_array.stream().forEach(n -> System.out.println(n));
+            }
+//        for (Contact contact : cotacts_array) {
+//            if (contact.getName() != null) {
+////                cotacts_array.remove(contact);
 //                System.out.println(contact);
+//            } else {
+//                System.out.println("Values Not Found");
+//                return;
 //            }
 //        }
-
-//            System.out.println("No contacts in address book");
-//        } else {
-        for (Contact contact : cotacts_array) {
-            if (contact.getName() != null) {
-//                cotacts_array.remove(contact);
-                System.out.println(contact);
-            } else {
-                System.out.println("Values Not Found");
-                return;
-            }
-        }
     }
-
-
 }
