@@ -1,5 +1,12 @@
 package addressBook;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,6 +19,7 @@ public class AddressBook {
 
 
     //------------------------Book Logic Start ---------------------
+    AddressBook addressBook ;
     public static ArrayList<String> addressBook_arr = new ArrayList<String>();
     public static Hashtable<String, ArrayList<Contact>> addressBook_hashtable = new Hashtable<String, ArrayList<Contact>>();
     static void addAddressBook() {
@@ -44,7 +52,7 @@ public class AddressBook {
                     System.out.print("Enter command \t\t( Add , Edit , Display , Searchcitystate ," +
                             "\t SortByName , SortByCity , SortByState , SortByZip , \n" +
                             "\t \t\t \t\t \tContactsByCity , ContactsByState , ContactCountByCity , ContactCountByState ," +
-                            "WriteToFile , "+"ReadFromFile"+
+                            "WriteToFile , "+" ReadFromFile "+" readCSV ,"+" writeCSV ,"+
                             "\t Delete , Exit ): \n");
                     String command = sc2.nextLine();
                     switch (command) {
@@ -89,6 +97,24 @@ public class AddressBook {
                             break;
                         case "ReadFromFile":
                             addressBook.readFromFile();
+                            break;
+                        case "readCSV":
+                            try {
+                                addressBook.readCSV();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (CsvException e) {
+                                throw new RuntimeException(e);
+                            }
+                            break;
+                        case "writeCSV":
+                            try {
+                                addressBook.writeCSV();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            } catch (CsvException e) {
+                                throw new RuntimeException(e);
+                            }
                             break;
                         case "Delete":
                             addressBook.deletePersonDetails();
@@ -282,6 +308,8 @@ public class AddressBook {
         Comparator<Contact> comparator = Comparator.comparing(Contact::getName)
                 .thenComparing(Contact::getLast_N);
         Collections.sort(this.cotacts_array, comparator);
+        System.out.println("\n After Sort Name : \n");
+        this.display();
     }
 
     // Sort contacts by City using Java Streams
@@ -354,4 +382,53 @@ public class AddressBook {
 //            }
 //        }
     }
+
+    public void readCSV() throws IOException, CsvException {
+        System.out.println("Enter CSV Path to read ex: C:\\Users\\USER\\Desktop\\NCR_Faculty Profile.csv");
+        Scanner sc = new Scanner(System.in);
+        String psthCSV = sc.nextLine();
+        FileReader fileReader = new FileReader(psthCSV);
+        //create csvReader object //stream i
+        CSVReader csvReader = new CSVReaderBuilder(fileReader).build();
+        List<String[]> allData = csvReader.readAll();
+        for (String[] row : allData) {
+            for (String cell : row) {
+                System.out.print(cell+"         ");
+            }
+            System.out.println();
+        }
+        csvReader.close();
+    }
+
+    public void writeCSV() throws IOException, CsvException {
+        System.out.println("Enter CSV Path to write ex: C:\\Users\\USER\\Desktop\\NCR_Faculty Profile.csv");
+        Scanner sc = new Scanner(System.in);
+        String psthCSV = sc.nextLine();
+        FileWriter outputfile = new FileWriter(psthCSV);
+        CSVWriter writter = new CSVWriter(outputfile);
+
+        List<String[]> lines = new ArrayList<>();
+        String[] line =new String[]{
+          "NAME","LAST NAME","CITY","STATE","NUMBER","EMAIL","ADDRESS","ZIP"
+        };
+        lines.add(line);
+        for (Contact person : cotacts_array) {
+            line = new String[] {
+                    person.getName(),
+                    person.getLast_N(),
+                    person.getCity(),
+                    person.getState(),
+                    person.getNumber(),
+                    person.getEmail(),
+                    person.getAddress(),
+                    person.getZip()
+            };
+            lines.add(line);
+        }
+        writter.writeAll(lines);
+        writter.flush();
+        writter.close();
+    }
+
+
 }
