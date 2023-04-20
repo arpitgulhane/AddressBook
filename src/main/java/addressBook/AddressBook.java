@@ -22,7 +22,7 @@ public class AddressBook {
     AddressBook addressBook ;
     public static ArrayList<String> addressBook_arr = new ArrayList<String>();
     public static Hashtable<String, ArrayList<Contact>> addressBook_hashtable = new Hashtable<String, ArrayList<Contact>>();
-    static void addAddressBook() {
+    static void addAddressBook() throws IOException {
 
         Scanner get = new Scanner(System.in);
         int getMoreBook;
@@ -52,7 +52,7 @@ public class AddressBook {
                     System.out.print("Enter command \t\t( Add , Edit , Display , Searchcitystate ," +
                             "\t SortByName , SortByCity , SortByState , SortByZip , \n" +
                             "\t \t\t \t\t \tContactsByCity , ContactsByState , ContactCountByCity , ContactCountByState ," +
-                            "WriteToFile , "+" ReadFromFile "+" readCSV ,"+" writeCSV ,"+
+                            "WriteToFile , "+" ReadFromFile , "+" readCSV , "+" writeCSV , "+"writeToJsonFile , "+"readFromJsonFile"+
                             "\t Delete , Exit ): \n");
                     String command = sc2.nextLine();
                     switch (command) {
@@ -115,6 +115,12 @@ public class AddressBook {
                             } catch (CsvException e) {
                                 throw new RuntimeException(e);
                             }
+                            break;
+                        case "writeToJsonFile":
+                            addressBook.writeToJsonFile();
+                            break;
+                        case "readFromJsonFile":
+                            addressBook.readFromJsonFile();
                             break;
                         case "Delete":
                             addressBook.deletePersonDetails();
@@ -430,5 +436,20 @@ public class AddressBook {
         writter.close();
     }
 
+    public void writeToJsonFile() throws IOException {
+        try (FileWriter writer = new FileWriter("C:\\Users\\USER\\Desktop\\NCR_Faculty Profile.json")) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(this, writer);
+        }
+    }
+    // Getters and setters for contacts
+
+    public static AddressBook readFromJsonFile() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\USER\\Desktop\\NCR_Faculty Profile.json"))) {
+            Gson gson = new Gson();
+            System.out.println(gson.fromJson(reader, AddressBook.class));
+            return gson.fromJson(reader, AddressBook.class);
+        }
+    }
 
 }
